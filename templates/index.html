@@ -1607,14 +1607,7 @@
     window.addEventListener('load', () => {
       // Initialize section order list
       updateSectionOrderList();
-
-      // Auto-load example CV if form is empty
-      const data = collectFormData();
-      if (!data.name) {
-        loadExampleCV();
-      } else {
-        updatePreview();
-      }
+      updatePreview();
     });
   </script>
 </body>

@@ -1,55 +1,97 @@
 {
-  "name": "Yazan Alkamal",
-  "email": "yazan@al-kamal.net",
-  "phone": "+966507355821",
-  "linkedin": "https://www.linkedin.com/in/yazanalkamal/",
-  "github": "https://github.com/POGYaz/",
-  "website": "https://al-kamal.net/",
-  "summary": "Aspiring AI Engineer with a passion for artificial intelligence, machine learning, and solving real-world challenges. A McKinsey Forward Alumni with strong leadership, problem-solving, and analytical skills, committed to continuous learning and collaboration. Dedicated to building intelligent systems that optimize processes and drive meaningful innovation.",
+  "name": "Alex Johnson",
+  "email": "alex.johnson@email.com",
+  "phone": "+1 (555) 123-4567",
+  "linkedin": "https://www.linkedin.com/in/alexjohnson/",
+  "github": "https://github.com/alexjohnson",
+  "website": "https://alexjohnson.dev/",
+  "summary": "Full-stack Software Engineer with 5+ years of experience building scalable web applications and cloud-native solutions. Passionate about clean code, agile methodologies, and mentoring junior developers. Strong background in both frontend and backend technologies with a focus on delivering high-quality, user-centric products.",
   "education": [
     {
-      "university": "Umm Al-Qura University",
-      "location": "",
-      "degree": "B.S. in Software Engineering",
-      "date": "Aug 2023 - Present"
+      "university": "Stanford University",
+      "location": "Stanford, CA",
+      "degree": "M.S. in Computer Science",
+      "date": "Sep 2017 - Jun 2019"
+    },
+    {
+      "university": "University of California, Berkeley",
+      "location": "Berkeley, CA",
+      "degree": "B.S. in Computer Science",
+      "date": "Sep 2013 - Jun 2017"
     }
   ],
   "experience": [
     {
-      "title": "AI Software Engineer",
-      "company": "Lucidya",
-      "location": "Remote",
-      "dates": "Nov 2025 - Present",
+      "title": "Senior Software Engineer",
+      "company": "Tech Solutions Inc.",
+      "location": "San Francisco, CA",
+      "dates": "Jan 2022 - Present",
       "bullets": [
-        "Developing a real-world AI project embedded directly into Lucidya's production environment.",
-        "Designing high-impact AI features that integrate seamlessly into live business workflows.",
-        "Turning a graduation project into a high-impact, deployable product used in a real SaaS ecosystem."
+        "Led development of microservices architecture serving 2M+ daily active users.",
+        "Reduced API response time by 40% through database optimization and caching strategies.",
+        "Mentored team of 5 junior developers, conducting code reviews and technical training sessions.",
+        "Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes."
       ]
     },
     {
-      "title": "AI Engineer",
-      "company": "Jarir Bookstore",
-      "location": "Remote",
-      "dates": "Jun 2025 - Sep 2025",
+      "title": "Software Engineer",
+      "company": "StartupHub",
+      "location": "Palo Alto, CA",
+      "dates": "Jul 2019 - Dec 2021",
       "bullets": [
-        "Optimized model performance and accuracy for deployment in a real-world retail setting.",
-        "Collaborated with cross-functional teams to align technical solutions with business goals.",
-        "Delivered a proof-of-concept system showcasing measurable improvements in recommendation quality."
+        "Built real-time collaboration features using WebSockets, increasing user engagement by 35%.",
+        "Developed RESTful APIs handling 100K+ requests per minute with 99.9% uptime.",
+        "Collaborated with product and design teams to deliver features on tight deadlines."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "TaskFlow",
+      "dates": "2023",
+      "description": "Open-source project management tool",
+      "link": "https://github.com/alexjohnson/taskflow",
+      "bullets": [
+        "Built with React, Node.js, and PostgreSQL with 500+ GitHub stars.",
+        "Implemented drag-and-drop Kanban boards with real-time sync across devices.",
+        "Deployed on AWS with auto-scaling handling 10K+ concurrent users."
+      ]
+    },
+    {
+      "name": "WeatherAPI",
+      "dates": "2022",
+      "description": "Weather forecasting API service",
+      "link": "https://github.com/alexjohnson/weatherapi",
+      "bullets": [
+        "Created RESTful API aggregating data from multiple weather sources.",
+        "Achieved 99.95% uptime with Redis caching and rate limiting.",
+        "Documented with OpenAPI specification, serving 50+ third-party integrations."
       ]
     }
   ],
   "skills": {
-    "Programming": ["Java", "Python", "JavaScript", "HTML/CSS", "SQL"],
-    "Tools": ["IntelliJ", "PyCharm", "AWS", "Jupyter Notebooks", "PyTorch", "Pandas", "Numpy", "MySQL"]
+    "Languages": ["JavaScript", "TypeScript", "Python", "Java", "SQL"],
+    "Frontend": ["React", "Vue.js", "Next.js", "HTML/CSS", "Tailwind"],
+    "Backend": ["Node.js", "Express", "Django", "Spring Boot", "GraphQL"],
+    "Cloud & DevOps": ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"]
   },
   "certifications": [
     {
-      "name": "McKinsey Forward Program",
-      "date": "Dec 2024",
-      "provider": "McKinsey & Company"
+      "name": "AWS Solutions Architect Professional",
+      "date": "Mar 2023",
+      "provider": "Amazon Web Services"
+    },
+    {
+      "name": "Google Cloud Professional Developer",
+      "date": "Nov 2022",
+      "provider": "Google Cloud"
+    },
+    {
+      "name": "Certified Kubernetes Administrator",
+      "date": "Jun 2021",
+      "provider": "Cloud Native Computing Foundation"
     }
   ],
-  "projects": [],
   "publications": [],
   "researchexperience": [],
   "industryexperience": [],
@@ -57,5 +99,5 @@
   "volunteering": [],
   "custom_sections": [],
   "custom_headers": [],
-  "order": ["Summary", "Education", "Experience", "Skills", "Certifications"]
+  "order": ["Summary", "Education", "Experience", "Projects", "Skills", "Certifications"]
 }
