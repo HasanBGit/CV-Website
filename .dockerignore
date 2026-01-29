@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+venv
+.venv
+.env
+.env.*
+
+# IDE / editor
+.idea
+.vscode
+*.swp
+*.swo
+
+# Test and build artifacts
+test_cv.*
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Documentation and plans (not needed at runtime)
+*.md
+.cursor
+.plans
+
+# Docker (compose not needed inside image)
+docker-compose*
+.dockerignore
