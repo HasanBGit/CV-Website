@@ -185,9 +185,10 @@
     <section class="form-section">
       <h2>ترتيب الأقسام</h2>
       <p class="help-text">اسحب القطع لإعادة ترتيب الأقسام في سيرتك الذاتية.</p>
-      <ul id="order" class="order">
-        <!-- Sections will be populated dynamically -->
+      <ul id="order" class="order" role="list" aria-label="ترتيب أقسام السيرة">
+        <!-- Sections populated dynamically -->
       </ul>
+      <p id="order-empty" class="order-empty hidden">لا توجد أقسام. أعد إظهار الأقسام أعلاه لترتيبها.</p>
     </section>
 
     <div class="generate-section">
@@ -214,6 +215,7 @@
       </div>
     </div>
   </div>
+  <div id="toast" class="toast hidden" aria-live="polite"></div>
 
   <script>
     // ----- Helper functions for adding form sections -----
@@ -686,11 +688,11 @@
         // Clear the list
         orderList.innerHTML = '';
         
-        // Add items in the order specified by JSON
+        // Add items in the order specified by JSON (map "Skills" from JSON to "Technical Skills" for UI)
         data.order.forEach(sectionName => {
-          // Find the section ID for this canonical name
+          const canonicalName = sectionName === 'Skills' ? 'Technical Skills' : sectionName;
           const sectionId = Object.keys(SECTION_ID_TO_CANONICAL).find(
-            id => SECTION_ID_TO_CANONICAL[id] === sectionName
+            id => SECTION_ID_TO_CANONICAL[id] === canonicalName
           );
           if (sectionId && orderMap[sectionId]) {
             orderList.appendChild(orderMap[sectionId]);
@@ -796,12 +798,24 @@
       updateSectionOrderList();
     }
 
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      clearTimeout(showToast._tid);
+      showToast._tid = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
+    }
+
     function removeSection(sectionId) {
       const section = document.getElementById(sectionId);
       if (section) {
         section.style.display = 'none';
         updateSectionOrderList();
         updatePreview();
+        showToast('تم إزالة القسم. سيُحدَّث PDF تلقائياً.');
       }
     }
 
@@ -976,6 +990,12 @@
 
       // Add custom sections
       updateCustomSectionOrder();
+
+      // Show empty state when no sections in order
+      const orderEmpty = document.getElementById('order-empty');
+      if (orderEmpty) {
+        orderEmpty.classList.toggle('hidden', orderList.children.length > 0);
+      }
     }
 
     function addCustomBlock(btn) {
@@ -1012,8 +1032,8 @@
       list.addEventListener('dragend', e => {
         e.target.classList.remove('dragging');
         dragEl = null;
-        // Update preview when drag ends
         updatePreview();
+        if (typeof showToast === 'function') showToast('تم تحديث ترتيب الأقسام.');
       });
       
       list.addEventListener('dragover', e => { 

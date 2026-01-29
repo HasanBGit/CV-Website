@@ -303,36 +303,23 @@ def build_sections_latex(payload):
     parts = []
     seen = set()
 
-    # Add selected built-in sections in chosen order
+    # Add only sections that are in order (removed sections stay out of PDF)
     for name in order:
-        b = SECTION_BUILDERS.get(name)
+        lookup_name = "Skills" if name == "Technical Skills" else name
+        b = SECTION_BUILDERS.get(lookup_name)
         if b:
-            # Use custom section name if available
-            section_id = name.lower().replace(" ", "")
+            # Use custom section name if available (frontend uses "skills" for Technical Skills)
+            section_id = "skills" if name == "Technical Skills" else lookup_name.lower().replace(" ", "")
             custom_name = section_names.get(section_id, name)
             section_tex = b(payload)
             if not section_tex.strip():
                 seen.add(name)
                 continue
-            if custom_name != name:
-                # Replace the section name in the LaTeX
-                section_tex = section_tex.replace(f"\\section{{{name}}}", f"\\section{{{custom_name}}}")
-                section_tex = section_tex.replace(f"\\section*{{{name}}}", f"\\section*{{{custom_name}}}")
+            if custom_name != lookup_name:
+                section_tex = section_tex.replace(f"\\section{{{lookup_name}}}", f"\\section{{{custom_name}}}")
+                section_tex = section_tex.replace(f"\\section*{{{lookup_name}}}", f"\\section*{{{custom_name}}}")
             parts.append(section_tex)
             seen.add(name)
-
-    # Append any built-in sections not in order but present in data
-    for name, builder in SECTION_BUILDERS.items():
-        if name not in seen and payload.get(name.lower().replace(" ", "")):
-            section_id = name.lower().replace(" ", "")
-            custom_name = section_names.get(section_id, name)
-            section_tex = builder(payload)
-            if not section_tex.strip():
-                continue
-            if custom_name != name:
-                section_tex = section_tex.replace(f"\\section{{{name}}}", f"\\section{{{custom_name}}}")
-                section_tex = section_tex.replace(f"\\section*{{{name}}}", f"\\section*{{{custom_name}}}")
-            parts.append(section_tex)
 
     # Custom sections (can be placed anywhere via "order" using "Custom:<Title>")
     # If user put "Custom:<Title>" inside order, we respect that position.
