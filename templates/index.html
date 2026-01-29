@@ -445,6 +445,7 @@
       
       // Clear all sections
       document.getElementById('education').innerHTML = '<p class="empty-state help-text">لا توجد عناصر بعد.</p>';
+      document.getElementById('experience').innerHTML = '<p class="empty-state help-text">لا توجد عناصر بعد.</p>';
       document.getElementById('researchexperience').innerHTML = '<p class="empty-state help-text">لا توجد عناصر بعد.</p>';
       document.getElementById('industryexperience').innerHTML = '<p class="empty-state help-text">لا توجد عناصر بعد.</p>';
       document.getElementById('projects').innerHTML = '<p class="empty-state help-text">لا توجد عناصر بعد.</p>';
@@ -494,7 +495,27 @@
           }
         });
       }
-      
+
+      // Experience
+      if (data.experience && data.experience.length > 0) {
+        data.experience.forEach(exp => {
+          addExperience();
+          const cards = document.querySelectorAll('#experience .card');
+          const card = cards[cards.length - 1];
+          if (card) {
+            const [title, company, location, dates] = card.querySelectorAll('input');
+            const ta = card.querySelector('textarea');
+            title.value = exp.title || '';
+            company.value = exp.company || '';
+            location.value = exp.location || '';
+            dates.value = exp.dates || '';
+            if (ta && exp.bullets && exp.bullets.length > 0) {
+              ta.value = exp.bullets.join('\n');
+            }
+          }
+        });
+      }
+
       // Research Experience
       if (data.researchexperience && data.researchexperience.length > 0) {
         data.researchexperience.forEach(exp => {
