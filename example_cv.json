@@ -1,0 +1,61 @@
+{
+  "name": "Yazan Alkamal",
+  "email": "yazan@al-kamal.net",
+  "phone": "+966507355821",
+  "linkedin": "https://www.linkedin.com/in/yazanalkamal/",
+  "github": "https://github.com/POGYaz/",
+  "website": "https://al-kamal.net/",
+  "summary": "Aspiring AI Engineer with a passion for artificial intelligence, machine learning, and solving real-world challenges. A McKinsey Forward Alumni with strong leadership, problem-solving, and analytical skills, committed to continuous learning and collaboration. Dedicated to building intelligent systems that optimize processes and drive meaningful innovation.",
+  "education": [
+    {
+      "university": "Umm Al-Qura University",
+      "location": "",
+      "degree": "B.S. in Software Engineering",
+      "date": "Aug 2023 - Present"
+    }
+  ],
+  "experience": [
+    {
+      "title": "AI Software Engineer",
+      "company": "Lucidya",
+      "location": "Remote",
+      "dates": "Nov 2025 - Present",
+      "bullets": [
+        "Developing a real-world AI project embedded directly into Lucidya's production environment.",
+        "Designing high-impact AI features that integrate seamlessly into live business workflows.",
+        "Turning a graduation project into a high-impact, deployable product used in a real SaaS ecosystem."
+      ]
+    },
+    {
+      "title": "AI Engineer",
+      "company": "Jarir Bookstore",
+      "location": "Remote",
+      "dates": "Jun 2025 - Sep 2025",
+      "bullets": [
+        "Optimized model performance and accuracy for deployment in a real-world retail setting.",
+        "Collaborated with cross-functional teams to align technical solutions with business goals.",
+        "Delivered a proof-of-concept system showcasing measurable improvements in recommendation quality."
+      ]
+    }
+  ],
+  "skills": {
+    "Programming": ["Java", "Python", "JavaScript", "HTML/CSS", "SQL"],
+    "Tools": ["IntelliJ", "PyCharm", "AWS", "Jupyter Notebooks", "PyTorch", "Pandas", "Numpy", "MySQL"]
+  },
+  "certifications": [
+    {
+      "name": "McKinsey Forward Program",
+      "date": "Dec 2024",
+      "provider": "McKinsey & Company"
+    }
+  ],
+  "projects": [],
+  "publications": [],
+  "researchexperience": [],
+  "industryexperience": [],
+  "honorsawards": [],
+  "volunteering": [],
+  "custom_sections": [],
+  "custom_headers": [],
+  "order": ["Summary", "Education", "Experience", "Skills", "Certifications"]
+}

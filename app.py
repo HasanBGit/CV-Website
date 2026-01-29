@@ -281,20 +281,20 @@ def build_header(u):
 # Map section names (as shown in UI) to builders (skip empty sections)
 SECTION_BUILDERS = {
     "Summary": lambda d: "" if not (d.get("summary") or "").strip() else f"\\vspace{{0.5ex}}\n\\section*{{Summary}}\n{esc(d.get('summary',''))}\n",
-    "Education": lambda d: f"\\vspace{{-10px}}\n\\section{{Education}}\n{build_education(d.get('education'))}\n",
+    "Education": lambda d: "" if not d.get("education") else f"\\vspace{{-10px}}\n\\section{{Education}}\n{build_education(d.get('education'))}\n",
     "Experience": lambda d: "" if not d.get("experience") else f"\\vspace{{-2ex}}\n\\section{{Experience}}\n{build_experience(d.get('experience'))}\n",
-    "Research Experience": lambda d: f"\\section{{Research Experience}}\n{build_research_experience(d.get('researchexperience'))}\n",
-    "Industry Experience": lambda d: f"\\vspace{{-2ex}}\n\\section{{Industry Experience}}\n{build_industry_experience(d.get('industryexperience'))}\n",
-    "Projects": lambda d: f"\\vspace{{-2ex}}\n\\section{{Projects}}\n{build_projects(d.get('projects'))}\n",
-    "Technical Skills": lambda d: f"\\vspace{{-2ex}}\n\\section{{Technical Skills}}\n{build_skills(d.get('skills'))}\n",
-    "Certifications": lambda d: f"\\vspace{{-2ex}}\n\\section{{Certifications}}\n{build_certifications(d.get('certifications'))}\n",
-    "Publications": lambda d: f"\\vspace{{-2ex}}\n\\section{{Publications}}\n{build_publications(d.get('publications'))}\n",
-    "Honors & Awards": lambda d: f"\\vspace{{-2ex}}\n\\section{{Honors \\& Awards}}\n{build_honors_awards(d.get('honorsawards'))}\n",
-    "Volunteering": lambda d: f"\\vspace{{-2ex}}\n\\section{{Volunteering}}\n{build_volunteering(d.get('volunteering'))}\n",
+    "Research Experience": lambda d: "" if not d.get("researchexperience") else f"\\section{{Research Experience}}\n{build_research_experience(d.get('researchexperience'))}\n",
+    "Industry Experience": lambda d: "" if not d.get("industryexperience") else f"\\vspace{{-2ex}}\n\\section{{Industry Experience}}\n{build_industry_experience(d.get('industryexperience'))}\n",
+    "Projects": lambda d: "" if not d.get("projects") else f"\\vspace{{-2ex}}\n\\section{{Projects}}\n{build_projects(d.get('projects'))}\n",
+    "Skills": lambda d: "" if not d.get("skills") else f"\\vspace{{-2ex}}\n\\section{{Skills}}\n{build_skills(d.get('skills'))}\n",
+    "Certifications": lambda d: "" if not d.get("certifications") else f"\\vspace{{-2ex}}\n\\section{{Certifications}}\n{build_certifications(d.get('certifications'))}\n",
+    "Publications": lambda d: "" if not d.get("publications") else f"\\vspace{{-2ex}}\n\\section{{Publications}}\n{build_publications(d.get('publications'))}\n",
+    "Honors & Awards": lambda d: "" if not d.get("honorsawards") else f"\\vspace{{-2ex}}\n\\section{{Honors \\& Awards}}\n{build_honors_awards(d.get('honorsawards'))}\n",
+    "Volunteering": lambda d: "" if not d.get("volunteering") else f"\\vspace{{-2ex}}\n\\section{{Volunteering}}\n{build_volunteering(d.get('volunteering'))}\n",
 }
 
 DEFAULT_ORDER = [
-    "Education", "Research Experience", "Industry Experience", "Publications", "Projects", "Technical Skills", "Honors & Awards", "Volunteering", "Certifications"
+    "Education", "Research Experience", "Industry Experience", "Publications", "Projects", "Skills", "Honors & Awards", "Volunteering", "Certifications"
 ]
 
 def build_sections_latex(payload):
