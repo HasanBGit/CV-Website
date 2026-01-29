@@ -99,5 +99,5 @@
   "volunteering": [],
   "custom_sections": [],
   "custom_headers": [],
-  "order": ["Summary", "Education", "Experience", "Projects", "Skills", "Certifications"]
+  "order": ["Summary", "Education", "Experience", "Projects", "Certifications", "Skills"]
 }
