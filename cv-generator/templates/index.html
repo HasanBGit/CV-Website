@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV Generator</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Professional CV Generator</h1>
+      <p>Create your professional resume with drag-and-drop section ordering</p>
+    </header>
+
+    <div class="main-layout">
+      <div class="form-column">
+
+    <!-- Basic info -->
+    <section class="form-section" id="personal-info">
+      <h2>Personal Information</h2>
+      <div class="grid">
+        <label>Full Name<input name="name" required></label>
+        <label>Email<input name="email" type="email" required></label>
+        <label>Phone<input name="phone"></label>
+        <label>LinkedIn<input name="linkedin" placeholder="https://linkedin.com/in/yourname"></label>
+        <label>GitHub<input name="github" placeholder="https://github.com/yourname"></label>
+        <label>Website<input name="website" placeholder="https://yourwebsite.com"></label>
+      </div>
+    </section>
+
+    <!-- Summary Section -->
+    <section class="form-section" id="summary">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Summary" data-section="summary" onchange="updateSectionName('summary', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('summary')">Remove Section</button>
+      </div>
+      <div class="section-content">
+        <label>Professional Summary<textarea name="summary" rows="3" placeholder="Brief overview of your professional background and key achievements..."></textarea></label>
+      </div>
+    </section>
+
+    <!-- Custom Headers -->
+    <section class="form-section">
+      <h2>Additional Headers</h2>
+      <div id="custom-headers"></div>
+      <button class="secondary" type="button" onclick="addCustomHeader()">+ Add Custom Header</button>
+    </section>
+
+    <!-- Experience (dynamic list) -->
+    <section class="form-section">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Work Experience" data-section="experience" onchange="updateSectionName('experience', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('experience')">Remove Section</button>
+      </div>
+      <div id="experience" class="section-content"></div>
+      <button class="secondary" type="button" onclick="addExperience()">+ Add Experience</button>
+    </section>
+
+    <!-- Education -->
+    <section class="form-section">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Education" data-section="education" onchange="updateSectionName('education', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('education')">Remove Section</button>
+      </div>
+      <div id="education" class="section-content"></div>
+      <button class="secondary" type="button" onclick="addEducation()">+ Add Education</button>
+    </section>
+
+    <!-- Projects -->
+    <section class="form-section">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Projects" data-section="projects" onchange="updateSectionName('projects', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('projects')">Remove Section</button>
+      </div>
+      <div id="projects" class="section-content"></div>
+      <button class="secondary" type="button" onclick="addProject()">+ Add Project</button>
+    </section>
+
+    <!-- Publications (Optional) -->
+    <section class="form-section">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Publications" data-section="publications" onchange="updateSectionName('publications', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('publications')">Remove Section</button>
+      </div>
+      <div id="publications" class="section-content"></div>
+      <button class="secondary" type="button" onclick="addPublication()">+ Add Publication</button>
+    </section>
+
+    <!-- Skills -->
+    <section class="form-section">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Skills" data-section="skills" onchange="updateSectionName('skills', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('skills')">Remove Section</button>
+      </div>
+      <div id="skills" class="section-content">
+        <div class="row">
+          <input placeholder="Category (e.g., Programming Languages)" class="skill-cat">
+          <input placeholder="Skills (comma-separated)" class="skill-items">
+        </div>
+      </div>
+      <button class="secondary" type="button" onclick="addSkillRow()">+ Add Skill Category</button>
+    </section>
+
+    <!-- Certifications -->
+    <section class="form-section">
+      <div class="section-header">
+        <input type="text" class="section-title-input" value="Certifications" data-section="certifications" onchange="updateSectionName('certifications', this.value)">
+        <button type="button" class="remove-section-btn" onclick="removeSection('certifications')">Remove Section</button>
+      </div>
+      <div id="certifications" class="section-content"></div>
+      <button class="secondary" type="button" onclick="addCertification()">+ Add Certification</button>
+    </section>
+
+    <!-- Custom sections -->
+    <section class="form-section">
+      <h2>Custom Sections</h2>
+      <div id="custom-sections"></div>
+      <button class="secondary" type="button" onclick="addCustomSection()">+ Add Custom Section</button>
+    </section>
+
+    <!-- Drag & drop ordering -->
+    <section class="form-section">
+      <h2>Section Order</h2>
+      <p class="help-text">Drag and drop to reorder sections in your CV</p>
+      <ul id="order" class="order">
+        <!-- Sections will be populated dynamically -->
+      </ul>
+    </section>
+
+    <div class="generate-section">
+      <button id="submit" class="primary">Generate PDF Resume</button>
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <span>Generating your CV...</span>
+      </div>
+    </div>
+      </div>
+
+      <div class="preview-column">
+        <div class="preview-header">
+          <h2>Live Preview</h2>
+          <button id="refresh-preview" class="secondary small">Refresh Preview</button>
+        </div>
+        <div id="cv-preview" class="cv-preview">
+          <div class="preview-placeholder">
+            <p>Fill out the form to see your CV preview here</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ----- Helper functions for adding form sections -----
+    function addExperience() {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="card-header">
+          <h4>Work Experience</h4>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove(); updatePreview(); updateSectionOrderList();">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="Job Title" oninput="updatePreview()">
+          <input placeholder="Company" oninput="updatePreview()">
+          <input placeholder="Location" oninput="updatePreview()">
+          <input placeholder="Dates (e.g., Jan 2023 - Present)" oninput="updatePreview()">
+        </div>
+        <textarea placeholder="Key achievements and responsibilities (one per line)" oninput="updatePreview()"></textarea>
+      `;
+      document.getElementById('experience').appendChild(el);
+      updatePreview();
+      updateSectionOrderList();
+    }
+
+    function addEducation() {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="card-header">
+          <h4>Education</h4>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove(); updatePreview(); updateSectionOrderList();">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="University/Institution" oninput="updatePreview()">
+          <input placeholder="Location" oninput="updatePreview()">
+          <input placeholder="Degree & Major" oninput="updatePreview()">
+          <input placeholder="Graduation Date" oninput="updatePreview()">
+        </div>
+      `;
+      document.getElementById('education').appendChild(el);
+      updatePreview();
+      updateSectionOrderList();
+    }
+
+    function addProject() {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="card-header">
+          <h4>Project</h4>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove(); updatePreview(); updateSectionOrderList();">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="Project Name" oninput="updatePreview()">
+          <input placeholder="Dates" oninput="updatePreview()">
+          <input placeholder="Technologies Used" oninput="updatePreview()">
+          <input placeholder="Project Link (optional)" class="project-link" oninput="updatePreview()">
+        </div>
+        <textarea placeholder="Project description and key features (one per line)" oninput="updatePreview()"></textarea>
+      `;
+      document.getElementById('projects').appendChild(el);
+      updatePreview();
+      updateSectionOrderList();
+    }
+
+    function addPublication() {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="card-header">
+          <h4>Publication</h4>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove(); updatePreview(); updateSectionOrderList();">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="Publication Title" oninput="updatePreview()">
+          <input placeholder="Publication Date" oninput="updatePreview()">
+          <input placeholder="Publisher/Journal" oninput="updatePreview()">
+        </div>
+        <textarea placeholder="Additional details (one per line)" oninput="updatePreview()"></textarea>
+      `;
+      document.getElementById('publications').appendChild(el);
+      updatePreview();
+      updateSectionOrderList();
+    }
+
+    function addSkillRow() {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <input placeholder="Category" class="skill-cat" oninput="updatePreview()">
+        <input placeholder="Skills (comma-separated)" class="skill-items" oninput="updatePreview()">
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();">×</button>
+      `;
+      document.getElementById('skills').appendChild(row);
+      updatePreview();
+      updateSectionOrderList();
+    }
+
+    function addCertification() {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="card-header">
+          <h4>Certification</h4>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove(); updatePreview(); updateSectionOrderList();">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="Certificate Name" oninput="updatePreview()">
+          <input placeholder="Issue Date" oninput="updatePreview()">
+          <input placeholder="Issuing Organization" oninput="updatePreview()">
+        </div>
+      `;
+      document.getElementById('certifications').appendChild(el);
+      updatePreview();
+      updateSectionOrderList();
+    }
+
+    function addCustomHeader() {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="card-header">
+          <h4>Custom Header</h4>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="Header Label (e.g., Portfolio)">
+          <input placeholder="Header Value (e.g., https://myportfolio.com)">
+        </div>
+      `;
+      document.getElementById('custom-headers').appendChild(el);
+    }
+
+    function addCustomSection() {
+      const wrap = document.createElement('div');
+      wrap.className = 'card';
+      wrap.innerHTML = `
+        <div class="card-header">
+          <input placeholder="Custom Section Title (e.g., Volunteering, Awards)" class="section-title" onchange="updateCustomSectionOrder()">
+          <button type="button" class="remove-btn" onclick="removeCustomSection(this)">×</button>
+        </div>
+        <div class="blocks"></div>
+        <button type="button" class="secondary small" onclick="addCustomBlock(this)">+ Add Entry</button>
+      `;
+      document.getElementById('custom-sections').appendChild(wrap);
+      updateCustomSectionOrder();
+    }
+
+    function removeCustomSection(btn) {
+      btn.parentElement.parentElement.remove();
+      updateCustomSectionOrder();
+    }
+
+    function updateCustomSectionOrder() {
+      const orderList = document.getElementById('order');
+      const customSections = document.querySelectorAll('#custom-sections .card .section-title');
+      
+      // Remove existing custom section items from order list
+      const existingCustomItems = orderList.querySelectorAll('li[data-custom="true"]');
+      existingCustomItems.forEach(item => item.remove());
+      
+      // Add current custom sections to order list
+      customSections.forEach(input => {
+        const title = input.value.trim();
+        if (title) {
+          const li = document.createElement('li');
+          li.textContent = title;
+          li.draggable = true;
+          li.setAttribute('data-custom', 'true');
+          orderList.appendChild(li);
+        }
+      });
+    }
+
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const sectionContent = section.querySelector('.section-content');
+      const addButton = section.querySelector('.secondary');
+      const removeBtn = section.querySelector('.remove-section-btn');
+      
+      if (!sectionContent || !addButton || !removeBtn) {
+        console.error('Could not find required elements for section:', sectionId);
+        return;
+      }
+      
+      if (sectionContent.style.display === 'none') {
+        // Show section
+        sectionContent.style.display = 'block';
+        addButton.style.display = 'block';
+        removeBtn.textContent = 'Remove Section';
+        removeBtn.classList.remove('restore-btn');
+        removeBtn.classList.add('remove-section-btn');
+      } else {
+        // Hide section
+        sectionContent.style.display = 'none';
+        addButton.style.display = 'none';
+        removeBtn.textContent = 'Restore Section';
+        removeBtn.classList.remove('remove-section-btn');
+        removeBtn.classList.add('restore-btn');
+      }
+      
+      // Update section order list
+      updateSectionOrderList();
+    }
+
+    function removeSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.style.display = 'none';
+        updateSectionOrderList();
+        updatePreview();
+      }
+    }
+
+    function restoreSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.style.display = 'block';
+        updateSectionOrderList();
+        updatePreview();
+      }
+    }
+
+    function updateSectionName(sectionId, newName) {
+      // Update the section order list
+      updateSectionOrderList();
+    }
+
+    function updateSectionOrderList() {
+      const orderList = document.getElementById('order');
+      const sectionMappings = {
+        'Summary': 'summary',
+        'Education': 'education', 
+        'Experience': 'experience',
+        'Projects': 'projects',
+        'Skills': 'skills',
+        'Certifications': 'certifications',
+        'Publications': 'publications'
+      };
+      
+      // Remove all existing items
+      orderList.innerHTML = '';
+      
+      // Add visible sections with their custom names
+      Object.entries(sectionMappings).forEach(([sectionName, sectionId]) => {
+        const section = document.getElementById(sectionId);
+        const sectionContent = section ? section.querySelector('.section-content') : null;
+        const titleInput = section ? section.querySelector('.section-title-input') : null;
+        
+        // Show section if it exists and is visible (don't require content)
+        if (section && section.style.display !== 'none' && sectionContent && sectionContent.style.display !== 'none') {
+          const li = document.createElement('li');
+          li.textContent = titleInput ? titleInput.value : sectionName;
+          li.draggable = true;
+          orderList.appendChild(li);
+        }
+      });
+      
+      // Add custom sections
+      updateCustomSectionOrder();
+      
+    }
+
+    function addCustomBlock(btn) {
+      const blocks = btn.parentElement.querySelector('.blocks');
+      const el = document.createElement('div');
+      el.className = 'card sub';
+      el.innerHTML = `
+        <div class="card-header">
+          <h5>Entry</h5>
+          <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+        <div class="grid">
+          <input placeholder="Title">
+          <input placeholder="Dates">
+          <input placeholder="Organization">
+          <input placeholder="Location">
+        </div>
+        <textarea placeholder="Details (one per line)"></textarea>
+      `;
+      blocks.appendChild(el);
+    }
+
+    // Drag & drop ordering
+    (function() {
+      const list = document.getElementById('order');
+      let dragEl = null;
+      
+      list.addEventListener('dragstart', e => { 
+        dragEl = e.target; 
+        e.dataTransfer.effectAllowed = 'move';
+        e.target.classList.add('dragging');
+      });
+      
+      list.addEventListener('dragend', e => {
+        e.target.classList.remove('dragging');
+        dragEl = null;
+        // Update preview when drag ends
+        updatePreview();
+      });
+      
+      list.addEventListener('dragover', e => { 
+        e.preventDefault(); 
+        const li = e.target.closest('li'); 
+        if (li && li !== dragEl) { 
+          const rect = li.getBoundingClientRect();
+          const midY = rect.top + rect.height / 2;
+          if (e.clientY < midY) {
+            list.insertBefore(dragEl, li);
+          } else {
+            list.insertBefore(dragEl, li.nextSibling);
+          }
+        } 
+      });
+      
+      list.addEventListener('drop', e => { 
+        e.preventDefault(); 
+      });
+    })();
+
+    // Form submission and PDF generation
+    document.getElementById('submit').addEventListener('click', async () => {
+      const submitBtn = document.getElementById('submit');
+      const loading = document.getElementById('loading');
+      
+      // Show loading state
+      submitBtn.style.display = 'none';
+      loading.classList.remove('hidden');
+
+      const payload = {
+        name: document.querySelector('[name="name"]').value,
+        email: document.querySelector('[name="email"]').value,
+        phone: document.querySelector('[name="phone"]').value,
+        linkedin: document.querySelector('[name="linkedin"]').value,
+        github: document.querySelector('[name="github"]').value,
+        website: document.querySelector('[name="website"]').value,
+        summary: document.querySelector('[name="summary"]').value,
+        education: [],
+        experience: [],
+        projects: [],
+        publications: [],
+        skills: {},
+        certifications: [],
+        custom_sections: [],
+        custom_headers: [],
+        section_names: {},
+        order: Array.from(document.querySelectorAll('#order li')).map(li => {
+          const text = li.textContent.trim();
+          const isCustom = li.getAttribute('data-custom') === 'true';
+          return isCustom ? `Custom:${text}` : text;
+        })
+      };
+
+      // Education
+      document.querySelectorAll('#education .card').forEach(card => {
+        const [university, location, degree, date] = card.querySelectorAll('input');
+        payload.education.push({ 
+          university: university.value, 
+          location: location.value, 
+          degree: degree.value, 
+          date: date.value 
+        });
+      });
+
+      // Experience
+      document.querySelectorAll('#experience .card').forEach(card => {
+        const [title, company, location, dates] = card.querySelectorAll('input');
+        const bullets = card.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+        payload.experience.push({ 
+          title: title.value, 
+          company: company.value, 
+          location: location.value, 
+          dates: dates.value, 
+          bullets 
+        });
+      });
+
+      // Projects
+      document.querySelectorAll('#projects .card').forEach(card => {
+        const inputs = card.querySelectorAll('input');
+        const [name, dates, description, link] = inputs;
+        const bullets = card.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+        payload.projects.push({ 
+          name: name.value, 
+          dates: dates.value, 
+          description: description.value, 
+          link: link ? link.value : '',
+          bullets 
+        });
+      });
+
+      // Publications
+      document.querySelectorAll('#publications .card').forEach(card => {
+        const [title, date, publisher] = card.querySelectorAll('input');
+        const bullets = card.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+        payload.publications.push({ 
+          title: title.value, 
+          date: date.value, 
+          publisher: publisher.value, 
+          bullets 
+        });
+      });
+
+      // Skills
+      const skillRows = document.querySelectorAll('#skills .row');
+      skillRows.forEach(row => {
+        const cat = row.querySelector('.skill-cat').value.trim();
+        const items = row.querySelector('.skill-items').value.split(',').map(s => s.trim()).filter(Boolean);
+        if (cat && items.length) payload.skills[cat] = items;
+      });
+
+      // Certifications
+      document.querySelectorAll('#certifications .card').forEach(card => {
+        const [name, date, provider] = card.querySelectorAll('input');
+        payload.certifications.push({ 
+          name: name.value, 
+          date: date.value, 
+          provider: provider.value 
+        });
+      });
+
+      // Custom sections
+      document.querySelectorAll('#custom-sections > .card').forEach(sec => {
+        const title = sec.querySelector('.section-title').value.trim();
+        const blocks = [];
+        sec.querySelectorAll('.blocks .card').forEach(b => {
+          const [t, dates, org, loc] = b.querySelectorAll('input');
+          const bullets = b.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+          blocks.push({ 
+            title: t.value, 
+            dates: dates.value, 
+            org: org.value, 
+            location: loc.value, 
+            bullets 
+          });
+        });
+        if (title) payload.custom_sections.push({ title, blocks });
+      });
+
+      // Custom headers
+      document.querySelectorAll('#custom-headers .card').forEach(card => {
+        const [label, value] = card.querySelectorAll('input');
+        if (label.value.trim() && value.value.trim()) {
+          payload.custom_headers.push({ 
+            label: label.value.trim(), 
+            value: value.value.trim() 
+          });
+        }
+      });
+
+      // Section names
+      document.querySelectorAll('.section-title-input').forEach(input => {
+        const sectionId = input.getAttribute('data-section');
+        const sectionName = input.value.trim();
+        if (sectionId && sectionName) {
+          payload.section_names[sectionId] = sectionName;
+        }
+      });
+
+      try {
+        // POST to Flask
+        const res = await fetch("/generate-cv", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.stderr || err.message || "Failed to generate PDF");
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "cv.pdf";
+        a.click();
+        URL.revokeObjectURL(url);
+
+      } catch (error) {
+        alert("Error generating PDF:\n" + error.message);
+      } finally {
+        // Hide loading state
+        loading.classList.add('hidden');
+        submitBtn.style.display = 'block';
+      }
+    });
+
+    // Live preview functionality - shows formatted preview
+    let previewTimeout;
+    function updatePreview() {
+      // Debounce preview updates to avoid too many requests
+      clearTimeout(previewTimeout);
+      previewTimeout = setTimeout(() => {
+        const preview = document.getElementById('cv-preview');
+        const data = collectFormData();
+        
+        if (!data.name) {
+          preview.innerHTML = '<div class="preview-placeholder"><p>Fill out the form to see your CV preview here</p></div>';
+          return;
+        }
+        
+        // Generate and show PDF preview
+        generatePDFPreview(data, preview);
+      }, 500); // 500ms delay
+    }
+    
+    async function generatePDFPreview(data, previewElement) {
+      // Add updating class for visual feedback
+      previewElement.classList.add('updating');
+      
+      // Show loading state
+      previewElement.innerHTML = '<div class="preview-loading"><div class="spinner"></div><p>Generating preview...</p></div>';
+      
+      try {
+        // Generate LaTeX and compile to PDF
+        const payload = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          linkedin: data.linkedin,
+          github: data.github,
+          website: data.website,
+          summary: data.summary,
+          education: data.education,
+          experience: data.experience,
+          projects: data.projects,
+          publications: data.publications,
+          skills: data.skills,
+          certifications: data.certifications,
+          custom_sections: data.custom_sections,
+          custom_headers: data.custom_headers,
+          section_names: data.section_names,
+          order: Array.from(document.querySelectorAll('#order li')).map(li => {
+            const text = li.textContent.trim();
+            const isCustom = li.getAttribute('data-custom') === 'true';
+            return isCustom ? `Custom:${text}` : text;
+          })
+        };
+
+        const response = await fetch("/generate-cv", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to generate PDF preview");
+        }
+
+        const blob = await response.blob();
+        const pdfUrl = URL.createObjectURL(blob);
+        
+        // Show PDF in iframe
+        previewElement.innerHTML = `
+          <div class="pdf-preview">
+            <iframe src="${pdfUrl}" width="100%" height="600px" style="border: none;"></iframe>
+          </div>
+        `;
+        
+        // Remove updating class
+        previewElement.classList.remove('updating');
+        
+        // Clean up old URL after 5 seconds
+        setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
+        
+      } catch (error) {
+        console.error('Preview generation error:', error);
+        // Fallback to formatted HTML preview
+        let previewHtml = generatePreview(data);
+        previewElement.innerHTML = previewHtml;
+        // Remove updating class
+        previewElement.classList.remove('updating');
+      }
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    function generatePreview(data) {
+      let previewHtml = `
+        <div class="cv-preview-content">
+          <div class="preview-header">
+            <h1>${escapeHtml(data.name || 'Your Name')}</h1>
+            <div class="contact-info">
+              ${data.phone ? `<span>${escapeHtml(data.phone)}</span>` : ''}
+              ${data.email ? `<span>${escapeHtml(data.email)}</span>` : ''}
+              ${data.linkedin ? `<span><a href="${escapeHtml(data.linkedin)}">LinkedIn</a></span>` : ''}
+              ${data.github ? `<span><a href="${escapeHtml(data.github)}">GitHub</a></span>` : ''}
+              ${data.website ? `<span><a href="${escapeHtml(data.website)}">Website</a></span>` : ''}
+            </div>
+          </div>
+      `;
+      
+      // Get section order
+      const order = Array.from(document.querySelectorAll('#order li')).map(li => li.textContent.trim());
+      
+      order.forEach(sectionName => {
+        if (sectionName === 'Summary' && data.summary) {
+          previewHtml += `
+            <div class="preview-section">
+              <h2>SUMMARY</h2>
+              <div class="section-content">
+                <p>${escapeHtml(data.summary)}</p>
+              </div>
+            </div>
+          `;
+        }
+        
+        if (sectionName === 'Education' && data.education.length > 0) {
+          previewHtml += `
+            <div class="preview-section">
+              <h2>EDUCATION</h2>
+              <div class="section-content">
+          `;
+          data.education.forEach(edu => {
+            previewHtml += `
+              <div class="education-item">
+                <div class="item-header">
+                  <strong>${escapeHtml(edu.university)}</strong>
+                  <span class="date">${escapeHtml(edu.date)}</span>
+                </div>
+                <div class="item-details">
+                  ${escapeHtml(edu.degree)} - ${escapeHtml(edu.location)}
+                </div>
+              </div>
+            `;
+          });
+          previewHtml += `</div></div>`;
+        }
+        
+        if (sectionName === 'Experience' && data.experience.length > 0) {
+          previewHtml += `
+            <div class="preview-section">
+              <h2>WORK EXPERIENCE</h2>
+              <div class="section-content">
+          `;
+          data.experience.forEach(exp => {
+            previewHtml += `
+              <div class="experience-item">
+                <div class="item-header">
+                  <strong>${escapeHtml(exp.title)}</strong>
+                  <span class="date">${escapeHtml(exp.dates)}</span>
+                </div>
+                <div class="item-details">
+                  ${escapeHtml(exp.company)} - ${escapeHtml(exp.location)}
+                </div>
+                ${exp.bullets && exp.bullets.length > 0 ? `
+                  <ul class="bullets">
+                    ${exp.bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}
+                  </ul>
+                ` : ''}
+              </div>
+            `;
+          });
+          previewHtml += `</div></div>`;
+        }
+        
+        if (sectionName === 'Projects' && data.projects.length > 0) {
+          previewHtml += `
+            <div class="preview-section">
+              <h2>PROJECTS</h2>
+              <div class="section-content">
+          `;
+          data.projects.forEach(proj => {
+            previewHtml += `
+              <div class="project-item">
+                <div class="item-header">
+                  <strong>${proj.link ? `<a href="${escapeHtml(proj.link)}">${escapeHtml(proj.name)}</a>` : escapeHtml(proj.name)}</strong>
+                  <span class="date">${escapeHtml(proj.dates)}</span>
+                </div>
+                <div class="item-details">
+                  ${escapeHtml(proj.description)}
+                </div>
+                ${proj.bullets && proj.bullets.length > 0 ? `
+                  <ul class="bullets">
+                    ${proj.bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}
+                  </ul>
+                ` : ''}
+              </div>
+            `;
+          });
+          previewHtml += `</div></div>`;
+        }
+        
+        if (sectionName === 'Skills' && Object.keys(data.skills).length > 0) {
+          previewHtml += `
+            <div class="preview-section">
+              <h2>SKILLS</h2>
+              <div class="section-content">
+          `;
+          Object.entries(data.skills).forEach(([category, skills]) => {
+            previewHtml += `
+              <div class="skill-category">
+                <strong>${escapeHtml(category)}:</strong> ${skills.map(skill => escapeHtml(skill)).join(', ')}
+              </div>
+            `;
+          });
+          previewHtml += `</div></div>`;
+        }
+      });
+      
+      previewHtml += `</div>`;
+      return previewHtml;
+    }
+    
+    function generateLaTeX(data) {
+      let latex = '\\documentclass[letterpaper,10pt]{article}\n\n' +
+'\\usepackage{latexsym}\n' +
+'\\usepackage[empty]{fullpage}\n' +
+'\\usepackage{titlesec}\n' +
+'\\usepackage{marvosym}\n' +
+'\\usepackage[dvipsnames]{xcolor}\n' +
+'\\usepackage{verbatim}\n' +
+'\\usepackage{enumitem}\n' +
+'\\usepackage{fancyhdr}\n' +
+'\\usepackage[hidelinks]{hyperref}\n' +
+'\\usepackage[english]{babel}\n' +
+'\\usepackage{tabularx}\n' +
+'\\pdfgentounicode=1\n\n' +
+'% Font options\n' +
+'\\usepackage[sfdefault]{roboto}\n\n' +
+'\\pagestyle{fancy}\n' +
+'\\fancyhf{}\n' +
+'\\fancyfoot{}\n' +
+'\\renewcommand{\\headrulewidth}{0pt}\n' +
+'\\renewcommand{\\footrulewidth}{0pt}\n\n' +
+'% Adjust margins\n' +
+'\\addtolength{\\oddsidemargin}{-0.5in}\n' +
+'\\addtolength{\\evensidemargin}{-0.5in}\n' +
+'\\addtolength{\\textwidth}{1in}\n' +
+'\\addtolength{\\topmargin}{-.5in}\n' +
+'\\addtolength{\\textheight}{1.0in}\n\n' +
+'\\urlstyle{same}\n' +
+'\\raggedbottom\n' +
+'\\raggedright\n' +
+'\\setlength{\\tabcolsep}{0in}\n\n' +
+'% Section formatting\n' +
+'\\titleformat{\\section}{\n' +
+'  \\vspace{8pt}\\scshape\\raggedright\\large\\bfseries\n' +
+'}{}{0em}{}[\\color{black}\\titlerule \\vspace{4pt}]\n\n' +
+'% Custom commands\n' +
+'\\newcommand{\\resumeItem}[1]{\n' +
+'  \\item\\small{\n' +
+'    {{ "{" }}#1 \\vspace{-2pt}}\n' +
+'  }\n' +
+'}\n\n' +
+'\\newcommand{\\resumeSubheading}[4]{\n' +
+'  \\vspace{-2pt}\\item\n' +
+'    \\begin{tabular*}{0.97\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}\n' +
+'      \\textbf{{ "{" }}#1} & {{ "{" }}#2} \\\\\n' +
+'      \\textit{\\small{{ "{" }}#3}} & \\textit{\\small {{ "{" }}#4}} \\\\\n' +
+'    \\end{tabular*}\\vspace{-7pt}\n' +
+'}\n\n' +
+'\\newcommand{\\resumeSubHeadingList}{\\begin{itemize}[leftmargin=0.15in, label={}]}\n' +
+'\\newcommand{\\resumeSubHeadingListEnd}{\\end{itemize}}\n\n' +
+'\\begin{document}\n\n' +
+'%----------HEADING----------\n' +
+'\\vspace{-4ex}\n' +
+'\\begin{center}\n' +
+'    {\\Huge \\scshape ' + data.name + '} \\\\ \\vspace{1pt}\n' +
+'    \\small ' + (data.phone || '') + ' $|$ \\href{mailto:' + data.email + '}{\\underline{' + data.email + '}} $|$ \n' +
+'    \\href{' + data.linkedin + '}{\\underline{LinkedIn}} $|$\n' +
+'    \\href{' + data.github + '}{\\underline{GitHub}} $|$\n' +
+'    \\href{' + data.website + '}{\\underline{' + data.website + '}}\n' +
+'\\end{center}\n\n' +
+'%----------BODY SECTIONS----------\n';
+
+      // Add sections based on order
+      const order = Array.from(document.querySelectorAll('#order li')).map(li => li.textContent.trim());
+      
+      order.forEach(sectionName => {
+        if (sectionName === 'Summary' && data.summary) {
+          latex += '\\vspace{0.5ex}\n' +
+'\\section*{Summary}\n' +
+data.summary + '\n\n';
+        }
+        
+        if (sectionName === 'Education' && data.education.length > 0) {
+          latex += '\\vspace{0.5ex}\n' +
+'\\section{Education}\n' +
+'\\resumeSubHeadingList\n';
+          data.education.forEach(edu => {
+            latex += '\\resumeSubheading{' + edu.university + '}{' + edu.date + '}{' + edu.degree + '}{' + edu.location + '}\n';
+          });
+          latex += '\\resumeSubHeadingListEnd\n\n';
+        }
+        
+        if (sectionName === 'Experience' && data.experience.length > 0) {
+          latex += '\\vspace{0.5ex}\n' +
+'\\section{Experience}\n' +
+'\\resumeSubHeadingList\n';
+          data.experience.forEach(exp => {
+            latex += '\\resumeSubheading{' + exp.title + '}{' + exp.dates + '}{' + exp.company + '}{' + exp.location + '}\n';
+            if (exp.bullets && exp.bullets.length > 0) {
+              latex += '\\resumeSubHeadingList\n';
+              exp.bullets.forEach(bullet => {
+                latex += '\\resumeItem{' + bullet + '}\n';
+              });
+              latex += '\\resumeSubHeadingListEnd\n';
+            }
+          });
+          latex += '\\resumeSubHeadingListEnd\n\n';
+        }
+        
+        if (sectionName === 'Projects' && data.projects.length > 0) {
+          latex += '\\vspace{0.5ex}\n' +
+'\\section{Projects}\n' +
+'\\resumeSubHeadingList\n';
+          data.projects.forEach(proj => {
+            const name = proj.link ? '\\href{' + proj.link + '}{' + proj.name + '}' : proj.name;
+            latex += '\\resumeSubheading{' + name + '}{' + proj.dates + '}{' + proj.description + '}{}\n';
+            if (proj.bullets && proj.bullets.length > 0) {
+              latex += '\\resumeSubHeadingList\n';
+              proj.bullets.forEach(bullet => {
+                latex += '\\resumeItem{' + bullet + '}\n';
+              });
+              latex += '\\resumeSubHeadingListEnd\n';
+            }
+          });
+          latex += '\\resumeSubHeadingListEnd\n\n';
+        }
+        
+        if (sectionName === 'Skills' && Object.keys(data.skills).length > 0) {
+          latex += '\\vspace{0.5ex}\n' +
+'\\section{Skills}\n' +
+'\\resumeSubHeadingList\n';
+          Object.entries(data.skills).forEach(([category, skills]) => {
+            latex += '\\resumeItem{\\textbf{' + category + '}: ' + skills.join(', ') + '}\n';
+          });
+          latex += '\\resumeSubHeadingListEnd\n\n';
+        }
+      });
+      
+      latex += '\\end{document}';
+      
+      return latex;
+    }
+    
+    function collectFormData() {
+      return {
+        name: document.querySelector('[name="name"]').value,
+        email: document.querySelector('[name="email"]').value,
+        phone: document.querySelector('[name="phone"]').value,
+        linkedin: document.querySelector('[name="linkedin"]').value,
+        github: document.querySelector('[name="github"]').value,
+        website: document.querySelector('[name="website"]').value,
+        summary: document.querySelector('[name="summary"]').value,
+        education: Array.from(document.querySelectorAll('#education .card')).map(card => {
+          const [university, location, degree, date] = card.querySelectorAll('input');
+          return { university: university.value, location: location.value, degree: degree.value, date: date.value };
+        }).filter(edu => edu.university || edu.location || edu.degree || edu.date),
+        experience: Array.from(document.querySelectorAll('#experience .card')).map(card => {
+          const [title, company, location, dates] = card.querySelectorAll('input');
+          const bullets = card.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+          return { title: title.value, company: company.value, location: location.value, dates: dates.value, bullets };
+        }).filter(exp => exp.title || exp.company || exp.location || exp.dates || exp.bullets.length > 0),
+        projects: Array.from(document.querySelectorAll('#projects .card')).map(card => {
+          const inputs = card.querySelectorAll('input');
+          const [name, dates, description, link] = inputs;
+          const bullets = card.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+          return { name: name.value, dates: dates.value, description: description.value, link: link ? link.value : '', bullets };
+        }).filter(proj => proj.name || proj.dates || proj.description || proj.link || proj.bullets.length > 0),
+        skills: Object.fromEntries(Array.from(document.querySelectorAll('#skills .row')).map(row => {
+          const cat = row.querySelector('.skill-cat').value.trim();
+          const items = row.querySelector('.skill-items').value.split(',').map(s => s.trim()).filter(Boolean);
+          return [cat, items];
+        }).filter(([cat, items]) => cat && items.length > 0)),
+        publications: Array.from(document.querySelectorAll('#publications .card')).map(card => {
+          const [title, date, publisher] = card.querySelectorAll('input');
+          const bullets = card.querySelector('textarea').value.split('\n').map(s => s.trim()).filter(Boolean);
+          return { title: title.value, date: date.value, publisher: publisher.value, bullets };
+        }).filter(pub => pub.title || pub.date || pub.publisher || pub.bullets.length > 0),
+        certifications: Array.from(document.querySelectorAll('#certifications .card')).map(card => {
+          const [name, date, provider] = card.querySelectorAll('input');
+          return { name: name.value, date: date.value, provider: provider.value };
+        }).filter(cert => cert.name || cert.date || cert.provider),
+        custom_sections: [],
+        custom_headers: [],
+        section_names: Object.fromEntries(Array.from(document.querySelectorAll('.section-title-input')).map(input => {
+          const sectionId = input.getAttribute('data-section');
+          const sectionName = input.value.trim();
+          return [sectionId, sectionName];
+        }).filter(([sectionId, sectionName]) => sectionId && sectionName))
+      };
+    }
+
+    // Add event listeners for live preview
+    document.addEventListener('input', () => {
+      updatePreview();
+      updateSectionOrderList();
+    });
+    document.addEventListener('change', () => {
+      updatePreview();
+      updateSectionOrderList();
+    });
+    
+    // Refresh preview button
+    document.getElementById('refresh-preview').addEventListener('click', updatePreview);
+
+    // Initialize section order list on page load
+    window.addEventListener('load', () => {
+      // Initialize section order list
+      updateSectionOrderList();
+      
+      // Initial preview update
+      updatePreview();
+    });
+  </script>
+</body>
+</html>
